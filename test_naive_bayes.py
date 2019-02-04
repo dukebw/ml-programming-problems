@@ -63,8 +63,25 @@ def test_naive_bayes():
             word_counts[word] = count + 1
 
     words = [w for w, count in word_counts.items() if count >= 3]
+    word_to_index = {w: i for i, w in enumerate(words)}
 
-    # Put naive Bayes here.
+    num_class = 2
+    class_tally = np.zeros(num_class, dtype=np.int32)
+    feat_class_tally = np.zeros([len(words), num_class], dtype=np.int32)
+
+    for ex in train_set:
+        gt = ex[1]
+        for word in np.unique(ex[0]):
+            if word not in word_to_index:
+                continue
+
+            feat_class_tally[word_to_index[word], gt] += 1
+
+        class_tally[gt] += 1
+
+    total_ex = np.sum(class_tally)
+    w_theta = feat_class_tally.astype(np.float32) / total_ex
+    w_pi = class_tally.astype(np.float32) / total_ex
 
 
 if __name__ == '__main__':

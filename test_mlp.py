@@ -18,25 +18,27 @@
 import numpy as np
 
 
-def strstr(haystack, needle):
-    kmp_table = np.zeros(len(needle), dtype=np.int32)
-    kmp_table[0] = -1
-    kmp_table[1] = 1
+def test_mlp():
+    D = [16, 16, 1]
 
-    #  P A R T I C I P A T E   I N   P A R A C H U T E
-    # -1 0 0 0 0 0 0 0 1 2 0 0 0 0 0 0 1 2 3 0 0 0 0 0
-    n_i = 0
-    h_i = 0
-    while (h_i + n_i) < len(needle):
-        kmp_table[h_i + n_i] = None
+    x_in = np.random.randn(D[0])
+    # Write the forward and backward pass for an MLP with one hidden layer.
+    w_h = np.random.randn(D[0]*D[1]).reshape([D[1], D[0]])
+    b_h = np.random.randn(D[1])
 
+    w_out = np.random.randn(D[1]*D[2]).reshape([D[2], D[1]])
+    b_out = np.random.randn(D[2])
 
-def test_strstr():
-    test_cases = [(('hello', 'll'), 2),
-                  (('aaaaa', 'bba'), -1)]
-    for case in test_cases:
-        assert strstr(*case[0]) == case[1]
+    # Forward.
+    h_0 = np.matmul(w_h, x_in)
+    h_0 += b_h
+
+    y_out = np.matmul(w_out, h_0)
+    y_out += b_out
+
+    # softmax_i = e^y_i / \sum_j e^y_j
+    # sigmoid: 1/(1 + e^-x)
 
 
 if __name__ == '__main__':
-    test_strstr()
+    test_mlp()
