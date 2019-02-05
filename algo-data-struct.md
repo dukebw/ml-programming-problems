@@ -11,3 +11,6 @@
    solutions. Memory usage?
 
         -
+
+
+3. Median of medians, quickselect, and quicksort.
